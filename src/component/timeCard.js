@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useMemo } from "react";
 
 const TimeCard = (props) => {
   const [timeSlice, setTimeSlice] = useState([]);

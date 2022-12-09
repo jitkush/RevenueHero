@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import Calendar from "react-calendar";
 import "../App.css";
 import "react-calendar/dist/Calendar.css";
 import { FcNext } from "react-icons/fc";
 import { FcPrevious } from "react-icons/fc";
-import TimeCard from "./timeCard";
+const TimeCard = lazy(() => import("./timeCard"));
 
 const MyCalender = (props) => {
   const [date, setDate] = useState();
@@ -58,7 +58,15 @@ const MyCalender = (props) => {
       <div className={!date ? "hide" : "show timeSliceContainer"}>
         {date ? (
           <div className="timeSlice">
-            <TimeCard date={date} update={updateDate} duration={20} />
+            <Suspense
+              fallback={
+                <div className="loading">
+                  <span>Loading ...</span>{" "}
+                </div>
+              }
+            >
+              <TimeCard date={date} update={updateDate} duration={20} />
+            </Suspense>
           </div>
         ) : null}
       </div>

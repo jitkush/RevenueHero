@@ -1,10 +1,11 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-import MyCalender from "./component/calender";
-import ConfirmationForm from "./component/confirmationForm";
-import TimeCard from "./component/timeCard";
 import { BsFillClockFill } from "react-icons/bs";
 import { FaVideo } from "react-icons/fa";
+import { lazy } from "react";
+import { Suspense } from "react";
+const MyCalender = lazy(() => import("./component/calender"));
+const ConfirmationForm = lazy(() => import("./component/confirmationForm"));
 const App = () => {
   const [finalDate, setFinal] = useState();
 
@@ -28,7 +29,7 @@ const App = () => {
               display: "flex",
             }}
           >
-            <BsFillClockFill color={"#868686"} fontSize={"1.8rem"} />
+            <BsFillClockFill color={"#868686"} fontSize={"1.9rem"} />
             <span className="mmm">&nbsp; 30min</span>
           </div>
           <div
@@ -37,7 +38,7 @@ const App = () => {
               display: "flex",
             }}
           >
-            <FaVideo color={"#868686"} fontSize={"2.5rem"} />
+            <FaVideo color={"#868686"} fontSize={"2.4rem"} />
             <span className="mmm">
               &nbsp;Web conferencing details provided upon confirmation.
             </span>
@@ -46,11 +47,27 @@ const App = () => {
         <div className="actionArea">
           {!finalDate ? (
             <div className="Calender">
-              <MyCalender getUpdatedDate={setFinalDate} />
+              <Suspense
+                fallback={
+                  <div className="loading">
+                    <span>Loading ...</span>{" "}
+                  </div>
+                }
+              >
+                <MyCalender getUpdatedDate={setFinalDate} />
+              </Suspense>
             </div>
           ) : (
             <div className="Calender">
-              <ConfirmationForm date={finalDate} back={resetData} />
+              <Suspense
+                fallback={
+                  <div className="loading">
+                    <span>Loading ...</span>
+                  </div>
+                }
+              >
+                <ConfirmationForm date={finalDate} back={resetData} />
+              </Suspense>
             </div>
           )}
         </div>
